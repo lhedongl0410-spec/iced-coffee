@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COFFEE INSIGHT | 라인 아웃라인 스타일 아이스커피 리포트</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            lineBlack: '#221F1F',
+            warmCream: '#FAF7F2',
+            cardWhite: '#FFFFFF',
+            lineBrown: '#4A3427',
+            fillLatte: '#E8D2C1',
+            fillIce: '#D2E3F3',
+            fillYellow: '#F3D250',
+            fillEspresso: '#3E2723',
+            softBeige: '#F3EFE6',
+            accentOrange: '#E07A5F'
+          },
+          fontFamily: {
+            sans: ['Pretendard', 'Noto Sans KR', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF7F2;
+      color: #221F1F;
+      font-family: 'Pretendard', sans-serif;
+    }
+    
+    .dashboard-container {
+      max-height: 800px;
+      height: 800px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-container {
+        max-height: none;
+        height: auto;
+      }
+    }
+
+    /* Custom Line-Art Styling */
+    .line-card {
+      background: #FFFFFF;
+      border: 2px solid #221F1F;
+      box-shadow: 4px 4px 0px #221F1F;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .line-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #221F1F;
+    }
+
+    .ribbon-banner {
+      background-color: #221F1F;
+      color: #FFFFFF;
+      position: relative;
+    }
+
+    /* Custom SVG Hover Effects */
+    .icon-float {
+      transition: transform 0.3s ease;
+    }
+    .line-card:hover .icon-float {
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF7F2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4A3427;
+      border-radius: 99px;
+    }
+  </style>
+</head>
+<body class="p-3 sm:p-5 min-h-screen flex items-center justify-center">
+
+  <!-- Main Container Fixed at ~800px height -->
+  <div class="dashboard-container w-full max-w-6xl bg-warmCream border-2 border-lineBlack rounded-3xl p-5 md:p-6 flex flex-col justify-between shadow-[8px_8px_0px_#221F1F] overflow-hidden relative">
+
+    <!-- Top Ribbon & Header (Line Icon Style Header) -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b-2 border-lineBlack/20 gap-3 shrink-0">
+      
+      <div class="flex items-center gap-3">
+        <!-- SVG Line Icon: Coffee Ribbon Banner Badge -->
+        <div class="relative flex items-center justify-center">
+          <div class="ribbon-banner px-3.5 py-1.5 rounded-lg text-xs font-black tracking-widest uppercase flex items-center gap-2 shadow-sm">
+            <svg class="w-5 h-5 text-fillYellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 8h1a4 4 0 0 1 0 8h-1"></path>
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path>
+              <line x1="6" y1="2" x2="6" y2="4"></line>
+              <line x1="10" y1="2" x2="10" y2="4"></line>
+              <line x1="14" y1="2" x2="14" y2="4"></line>
+            </svg>
+            CAFE / COFFEE REPORT
+          </div>
+        </div>
+
+        <div>
+          <h1 class="text-xl md:text-2xl font-black text-lineBlack tracking-tight flex items-center gap-2">
+            COFFEE INSIGHT <span class="text-xs bg-fillYellow border border-lineBlack px-2 py-0.5 rounded-full font-bold">2026 TREND</span>
+          </h1>
+          <p class="text-xs text-lineBrown font-medium">유럽에 불어온 아이스커피 열풍과 글로벌 소비 공식의 변화</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        <button onclick="toggleNetlifyGuide()" class="text-xs font-bold bg-fillYellow border-2 border-lineBlack text-lineBlack px-3.5 py-2 rounded-xl flex items-center gap-2 hover:bg-yellow-400 shadow-[2px_2px_0px_#221F1F] active:translate-x-0.5 active:translate-y-0.5 transition">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Netlify 배포 가이드
+        </button>
+        <button onclick="copyCurrentURL()" class="text-xs font-bold bg-cardWhite border-2 border-lineBlack text-lineBlack px-3 py-2 rounded-xl flex items-center gap-1.5 hover:bg-softBeige shadow-[2px_2px_0px_#221F1F] active:translate-x-0.5 active:translate-y-0.5 transition">
+          <i class="fa-regular fa-copy"></i> 공유
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Main Grid Content (5 Core Cards styled with Line Art Icons) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 flex-1 overflow-y-auto lg:overflow-hidden my-3 pr-1">
+
+      <!-- CARD 1: 유럽 주요국 아이스커피 판매 급증 (Col 5) -->
+      <div class="md:col-span-5 line-card rounded-2xl p-4 flex flex-col justify-between">
+        <div>
+          <!-- Card Header & SVG Illustration -->
+          <div class="flex items-start justify-between mb-2">
+            <div>
+              <span class="text-[11px] font-black text-lineBlack bg-softBeige border border-lineBlack px-2.5 py-0.5 rounded-md inline-block mb-1">01 | EUROPE SALES SURGE</span>
+              <h2 class="text-base font-extrabold text-lineBlack">에스프레소국들의 'ICE' 대전환</h2>
+            </div>
+            <!-- SVG: Iced Glass with Ice Cubes & Straw -->
+            <div class="w-12 h-12 flex-shrink-0 icon-float">
+              <svg viewBox="0 0 64 64" fill="none" class="w-full h-full">
+                <!-- Straw -->
+                <path d="M38 6L28 58" stroke="#221F1F" stroke-width="3.5" stroke-linecap="round"/>
+                <!-- Glass Body -->
+                <path d="M18 16L22 56C22.2 58.2 24 60 26.2 60H37.8C40 60 41.8 58.2 42 56L46 16H18Z" fill="#FAF7F2" stroke="#221F1F" stroke-width="3.5" stroke-linejoin="round"/>
+                <!-- Coffee Fill -->
+                <path d="M20 28L21.7 52C21.8 53.1 22.7 54 23.8 54H40.2C41.3 54 42.2 53.1 42.3 52L44 28H20Z" fill="#E8D2C1"/>
+                <!-- Ice Cubes inside -->
+                <rect x="25" y="32" width="8" height="8" rx="1.5" fill="#D2E3F3" stroke="#221F1F" stroke-width="2"/>
+                <rect x="32" y="42" width="7" height="7" rx="1.5" fill="#D2E3F3" stroke="#221F1F" stroke-width="2"/>
+                <!-- Cup Rim -->
+                <path d="M16 16H48" stroke="#221F1F" stroke-width="3.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <p class="text-xs text-lineBrown mb-3 font-medium">따뜻한 커피 문화가 확고했던 서유럽 주요국에서 아이스커피 판매량이 급격히 늘고 있습니다.</p>
+
+          <!-- Country Stat Bars -->
+          <div class="space-y-2.5">
+            <div>
+              <div class="flex justify-between text-xs font-black mb-0.5">
+                <span class="text-lineBlack flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-fillYellow border border-lineBlack"></span> 네덜란드</span>
+                <span class="text-accentOrange font-black">+44%</span>
+              </div>
+              <div class="w-full bg-softBeige border border-lineBlack h-3 rounded-full overflow-hidden p-0.5">
+                <div class="bg-fillYellow border border-lineBlack h-full rounded-full" style="width: 44%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-black mb-0.5">
+                <span class="text-lineBlack flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-fillLatte border border-lineBlack"></span> 영국</span>
+                <span class="text-accentOrange font-black">+39%</span>
+              </div>
+              <div class="w-full bg-softBeige border border-lineBlack h-3 rounded-full overflow-hidden p-0.5">
+                <div class="bg-fillLatte border border-lineBlack h-full rounded-full" style="width: 39%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-black mb-0.5">
+                <span class="text-lineBlack flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-fillIce border border-lineBlack"></span> 프랑스</span>
+                <span class="text-lineBlack font-black">+20%</span>
+              </div>
+              <div class="w-full bg-softBeige border border-lineBlack h-3 rounded-full overflow-hidden p-0.5">
+                <div class="bg-fillIce border border-lineBlack h-full rounded-full" style="width: 20%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-black mb-0.5">
+                <span class="text-lineBlack flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cardWhite border border-lineBlack"></span> 독일</span>
+                <span class="text-lineBlack font-black">+19%</span>
+              </div>
+              <div class="w-full bg-softBeige border border-lineBlack h-3 rounded-full overflow-hidden p-0.5">
+                <div class="bg-cardWhite border border-lineBlack h-full rounded-full" style="width: 19%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[10.5px] text-lineBrown/80 pt-2 border-t border-lineBlack/10 flex justify-between items-center mt-2">
+          <span>2~8월 아이스커피 판매량 증가율</span>
+          <span class="font-bold">출처: 파이어(Fyre)</span>
+        </div>
+      </div>
+
+      <!-- CARD 2 & 3 Col Stack (Col 7) -->
+      <div class="md:col-span-7 flex flex-col gap-4">
+        
+        <!-- CARD 2: 틈새에서 대중으로 (영국 소비자) -->
+        <div class="line-card rounded-2xl p-4 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between mb-2">
+              <div>
+                <span class="text-[11px] font-black text-lineBlack bg-softBeige border border-lineBlack px-2.5 py-0.5 rounded-md inline-block mb-1">02 | NICHE TO MAINSTREAM</span>
+                <h2 class="text-base font-extrabold text-lineBlack">영국 소비자 3명 중 1명 "아이스 즐긴다"</h2>
+              </div>
+              <!-- SVG: Takeout Paper Cup Line Icon -->
+              <div class="w-10 h-10 flex-shrink-0 icon-float">
+                <svg viewBox="0 0 64 64" fill="none" class="w-full h-full">
+                  <path d="M18 20L22 58H42L46 20H18Z" fill="#F3EFE6" stroke="#221F1F" stroke-width="3.5" stroke-linejoin="round"/>
+                  <path d="M14 12H50V20H14V12Z" fill="#F3D250" stroke="#221F1F" stroke-width="3.5" stroke-linejoin="round"/>
+                  <!-- Bean Oval Badge -->
+                  <ellipse cx="32" cy="38" rx="8" ry="6" fill="#FFFFFF" stroke="#221F1F" stroke-width="2.5"/>
+                  <path d="M30 35C33 36 31 41 34 41" stroke="#221F1F" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+              <!-- Big Stat Callout -->
+              <div class="sm:col-span-5 bg-fillYellow/30 border-2 border-lineBlack p-3 rounded-xl text-center">
+                <div class="text-3xl font-black text-lineBlack">32%</div>
+                <div class="text-xs font-bold text-lineBlack mt-0.5">영국 대중화 완료</div>
+                <div class="text-[10px] text-lineBrown mt-0.5">3명 중 1명 아이스커피 애용</div>
+              </div>
+
+              <!-- Bullet Info -->
+              <div class="sm:col-span-7 space-y-2 text-xs">
+                <div class="flex items-start gap-2 bg-softBeige/70 p-2 rounded-lg border border-lineBlack/20">
+                  <span class="font-black text-fillYellow bg-lineBlack px-1.5 py-0.5 rounded text-[10px]">55+</span>
+                  <p class="text-lineBlack font-medium text-[11px]"><strong class="font-bold">전 세대 확장:</strong> 젊은 층을 넘어 55세 이상 구매율도 급증</p>
+                </div>
+                <div class="flex items-start gap-2 bg-softBeige/70 p-2 rounded-lg border border-lineBlack/20">
+                  <i class="fa-solid fa-mug-hot text-lineBrown mt-1"></i>
+                  <p class="text-lineBlack font-medium text-[11px]"><strong class="font-bold">메뉴 다변화:</strong> 시럽·과일향은 물론 단백질 첨가 라떼까지 확대</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[10.5px] text-lineBrown/80 pt-2 border-t border-lineBlack/10 flex justify-between items-center mt-2">
+            <span>영국 소비자 설문 조사</span>
+            <span class="font-bold">출처: 닐슨아이큐(NIQ) 보고서</span>
+          </div>
+        </div>
+
+        <!-- CARD 3: 왜 갑자기? 인기 원인 3가지 -->
+        <div class="line-card rounded-2xl p-4 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-black text-lineBlack bg-softBeige border border-lineBlack px-2.5 py-0.5 rounded-md inline-block">03 | KEY DRIVERS</span>
+              <span class="text-xs font-bold text-lineBrown">3가지 핵심 폭발요인</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <!-- Item 1 -->
+              <div class="bg-softBeige/60 p-2.5 rounded-xl border-2 border-lineBlack flex flex-col justify-between">
+                <div>
+                  <div class="w-6 h-6 rounded-md bg-fillYellow border border-lineBlack text-lineBlack font-black text-xs flex items-center justify-center mb-1.5">1</div>
+                  <h3 class="text-xs font-black text-lineBlack">취향대로 조합</h3>
+                  <p class="text-[10.5px] text-lineBrown mt-1 font-medium leading-snug">젊은 세대의 개성 있는 우유, 시럽, 샷 조합 시도 활발</p>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="bg-softBeige/60 p-2.5 rounded-xl border-2 border-lineBlack flex flex-col justify-between">
+                <div>
+                  <div class="w-6 h-6 rounded-md bg-fillLatte border border-lineBlack text-lineBlack font-black text-xs flex items-center justify-center mb-1.5">2</div>
+                  <h3 class="text-xs font-black text-lineBlack">SNS 비주얼</h3>
+                  <p class="text-[10.5px] text-lineBrown mt-1 font-medium leading-snug">색감과 층(Layer) 연출이 뛰어난 아이스 음료 피드 확산</p>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="bg-softBeige/60 p-2.5 rounded-xl border-2 border-lineBlack flex flex-col justify-between">
+                <div>
+                  <div class="w-6 h-6 rounded-md bg-fillIce border border-lineBlack text-lineBlack font-black text-xs flex items-center justify-center mb-1.5">3</div>
+                  <h3 class="text-xs font-black text-lineBlack">더워진 유럽</h3>
+                  <p class="text-[10.5px] text-lineBrown mt-1 font-medium leading-snug">올해 여름 서유럽 관측 이래 최고 폭염 기록 영향</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Row (CARD 4 & CARD 5) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-1">
+      
+      <!-- CARD 4: 한국은 이미 사계절 ICE (Col 7) -->
+      <div class="md:col-span-7 line-card rounded-2xl p-4 flex flex-col justify-between">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <span class="text-[11px] font-black text-lineBlack bg-fillIce border border-lineBlack px-2.5 py-0.5 rounded-md inline-block mb-1">04 | KOREA's ALL-SEASON ICE</span>
+            <h3 class="text-base font-extrabold text-lineBlack">한국은 이미 사계절 내내 'ICE'</h3>
+          </div>
+          <!-- SVG: Ice Coffee Mug Icon -->
+          <div class="w-10 h-10 flex-shrink-0 icon-float">
+            <svg viewBox="0 0 64 64" fill="none" class="w-full h-full">
+              <rect x="18" y="22" width="28" height="36" rx="4" fill="#D2E3F3" stroke="#221F1F" stroke-width="3.5"/>
+              <path d="M46 28H52C55 28 56 30 56 33V41C56 44 55 46 52 46H46" stroke="#221F1F" stroke-width="3.5" stroke-linejoin="round"/>
+              <path d="M22 14L28 22" stroke="#221F1F" stroke-width="3" stroke-linecap="round"/>
+              <path d="M32 10L38 22" stroke="#221F1F" stroke-width="3" stroke-linecap="round"/>
+              <!-- Ice Sparkles -->
+              <path d="M26 34L30 38" stroke="#221F1F" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M38 42L42 46" stroke="#221F1F" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+          <div class="sm:col-span-6">
+            <p class="text-xs text-lineBrown font-medium leading-relaxed">
+              유럽에선 신선한 새 트렌드이지만, 한국에선 한겨울 패딩을 입고도 아이스커피를 들고 다니는 일상입니다.
+            </p>
+          </div>
+
+          <div class="sm:col-span-6 grid grid-cols-2 gap-2">
+            <div class="bg-fillIce/50 border-2 border-lineBlack p-2 rounded-xl text-center">
+              <span class="text-[10px] font-extrabold text-lineBlack block">한겨울 (1월)</span>
+              <span class="text-xl font-black text-lineBlack">60%</span>
+              <span class="text-[9px] text-lineBrown block font-bold">10잔 중 6잔 ICE</span>
+            </div>
+
+            <div class="bg-fillYellow/40 border-2 border-lineBlack p-2 rounded-xl text-center">
+              <span class="text-[10px] font-extrabold text-lineBlack block">한여름 (대서)</span>
+              <span class="text-xl font-black text-accentOrange">97%</span>
+              <span class="text-[9px] text-lineBrown block font-bold">압도적 아이스</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[10.5px] text-lineBrown/80 pt-2 border-t border-lineBlack/10 flex justify-between items-center mt-2">
+          <span>전국 4,000개 매장 약 4억 건 주문 분석</span>
+          <span class="font-bold">출처: 메가MGC커피</span>
+        </div>
+      </div>
+
+      <!-- CARD 5: 커피 공식이 바뀐다 (Col 5) -->
+      <div class="md:col-span-5 bg-lineBlack text-cardWhite rounded-2xl p-4 flex flex-col justify-between border-2 border-lineBlack shadow-[4px_4px_0px_#4A3427] relative overflow-hidden">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-black text-lineBlack bg-fillYellow border border-fillYellow px-2.5 py-0.5 rounded-md">05 | SHIFTING RULES</span>
+            <span class="text-[10px] font-mono text-fillYellow font-bold">GLOBAL TREND</span>
+          </div>
+
+          <h3 class="text-base font-black text-white mb-1.5 flex items-center gap-1.5">
+            '얼죽아' 소비 문화의 세계화
+          </h3>
+          <p class="text-xs text-softBeige leading-relaxed font-normal">
+            '얼어 죽어도 아이스 아메리카노'. 한국에서 시작된 이 독특한 소비 트렌드가 서유럽 기후 변화 및 세대 취향과 만나 세계적인 음료 패러다임을 바어놓고 있습니다.
+          </p>
+        </div>
+
+        <div class="pt-2 border-t border-white/20 flex items-center justify-between text-xs mt-2">
+          <span class="text-fillYellow font-extrabold text-[11px]">#EolJukAh #IceCoffeeCulture</span>
+          <button onclick="copyCurrentURL()" class="text-[11px] text-white hover:text-fillYellow underline font-bold">
+            공유하기
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-2 pt-2 border-t-2 border-lineBlack/10 flex items-center justify-between text-xs text-lineBrown shrink-0">
+      <div class="flex items-center gap-2 font-bold">
+        <span class="w-2.5 h-2.5 rounded-full bg-fillYellow border border-lineBlack"></span>
+        <span>LINE ICON CONCEPT DASHBOARD (HEIGHT ~800PX)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleNetlifyGuide()" class="font-black text-lineBlack hover:underline">
+          <i class="fa-solid fa-circle-question text-accentOrange"></i> 게시방법 보기
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Modal: Netlify Guide -->
+  <div id="netlifyModal" class="hidden fixed inset-0 bg-lineBlack/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-cardWhite border-4 border-lineBlack rounded-3xl max-w-md w-full p-6 shadow-[10px_10px_0px_#221F1F] relative">
+      <button onclick="toggleNetlifyGuide()" class="absolute top-4 right-4 text-lineBlack hover:text-accentOrange font-black text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 text-lineBlack font-black text-lg mb-4">
+        <div class="w-8 h-8 rounded-lg bg-fillYellow border-2 border-lineBlack flex items-center justify-center">
+          <i class="fa-solid fa-cloud-arrow-up text-lineBlack"></i>
+        </div>
+        Netlify로 웹페이지 1분 만에 게시하기
+      </div>
+
+      <ol class="space-y-3 text-xs text-lineBlack mb-6 list-decimal pl-4 font-medium">
+        <li class="leading-relaxed">
+          <strong class="font-bold text-lineBlack">파일 저장:</strong><br>
+          이 소스코드를 다운로드하거나 <code class="bg-softBeige border border-lineBlack px-1.5 py-0.5 rounded font-bold">index.html</code> 파일로 저장합니다.
+        </li>
+        <li class="leading-relaxed">
+          <strong class="font-bold text-lineBlack">Netlify 접속:</strong><br>
+          <a href="https://www.netlify.com" target="_blank" class="text-accentOrange underline font-bold">www.netlify.com</a> 가입 후 로그인합니다.
+        </li>
+        <li class="leading-relaxed">
+          <strong class="font-bold text-lineBlack">드래그 앤 드롭 배포:</strong><br>
+          <span class="font-bold bg-softBeige px-1">Sites -> Deploy manually</span> 영역에 <code class="bg-softBeige border border-lineBlack px-1.5 py-0.5 rounded font-bold">index.html</code>이 포함된 폴더를 끌어다 놓습니다.
+        </li>
+        <li class="leading-relaxed">
+          <strong class="font-bold text-lineBlack">완료:</strong> 즉시 고유한 웹 URL이 생성되어 인터넷에 무료로 전세계 공개됩니다!
+        </li>
+      </ol>
+
+      <button onclick="toggleNetlifyGuide()" class="w-full bg-lineBlack text-cardWhite py-3 rounded-xl text-xs font-black border-2 border-lineBlack hover:bg-fillYellow hover:text-lineBlack transition shadow-[3px_3px_0px_#221F1F]">
+        확인했습니다
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function toggleNetlifyGuide() {
+      const modal = document.getElementById('netlifyModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function copyCurrentURL() {
+      const tempInput = document.createElement("input");
+      tempInput.value = window.location.href;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      
+      const toast = document.createElement("div");
+      toast.className = "fixed bottom-6 right-6 bg-lineBlack text-cardWhite text-xs font-bold px-4 py-3 rounded-xl border-2 border-lineBlack shadow-[4px_4px_0px_#F3D250] z-50 flex items-center gap-2";
+      toast.innerHTML = '<i class="fa-solid fa-circle-check text-fillYellow"></i> 페이지 링크가 성공적으로 복사되었습니다!';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
